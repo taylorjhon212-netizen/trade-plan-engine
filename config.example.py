@@ -1,7 +1,12 @@
-CRYPTO_TIMEFRAME = "1d"
+import os
+
+CRYPTO_TIMEFRAME = "1h"
 CRYPTO_LIMIT = 200
+CRYPTO_CANDLE_RESAMPLE = "4h"
+
 STOCK_PERIOD = "6mo"
 STOCK_INTERVAL = "1d"
+
 DEFAULT_BALANCE = 10_000
 MAX_RISK_PCT = 0.02
 MAX_DAILY_LOSS_PCT = 0.05
@@ -21,6 +26,5 @@ STOCK_SYMBOLS = [
     "DIS", "NFLX", "ADBE", "CRM", "INTC",
 ]
 
-# Set these as environment variables (not in this file for security):
-# TELEGRAM_TOKEN
-# TELEGRAM_CHAT_ID
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN") or ""
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID") or ""

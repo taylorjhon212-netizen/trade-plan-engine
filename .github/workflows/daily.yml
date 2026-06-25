@@ -16,6 +16,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install yfinance pandas numpy ta requests
+      - name: Create config.py from example
+        run: cp config.example.py config.py
       - name: Scan opportunities
         run: python daily_opportunities.py
         env:
