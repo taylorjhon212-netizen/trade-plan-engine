@@ -1,6 +1,7 @@
 from scanner import scan_top_opportunities
 from notifier import send_telegram
 from config import CRYPTO_SYMBOLS
+from ecocal import get_week_ahead_note
 
 
 def run():
@@ -16,6 +17,11 @@ def run():
             f"   {r['action']} | {r['trend']} | RSI:{r['rsi']} | R:R {r['rr']}\n"
             f"   {', '.join(r['reasons'][:2])}"
         )
+    econ = get_week_ahead_note()
+    if econ:
+        lines.append("")
+        lines.append("*ECONOMIC CALENDAR*")
+        lines.append(econ)
     msg = "\n".join(lines)
     send_telegram(msg)
     print("Opportunities sent")

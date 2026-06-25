@@ -2,6 +2,7 @@ from data import fetch_data
 from analysis import generate_plan
 from notifier import send_telegram
 from config import CRYPTO_SYMBOLS, STOCK_SYMBOLS
+from ecocal import get_week_ahead_note
 
 
 def check_alerts():
@@ -72,6 +73,10 @@ def run():
             current = "*MARKET ALERTS (cont)*"
         current += text
     chunks.append(current)
+
+    econ = get_week_ahead_note()
+    if econ:
+        chunks.append(f"\n*ECONOMIC CALENDAR*\n{econ}")
 
     for chunk in chunks:
         send_telegram(chunk)

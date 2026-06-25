@@ -2,6 +2,7 @@ from data import fetch_data
 from analysis import generate_plan
 from notifier import send_telegram
 from config import CRYPTO_SYMBOLS, STOCK_SYMBOLS
+from ecocal import get_week_ahead_note
 
 
 def send_daily_report():
@@ -24,6 +25,12 @@ def send_daily_report():
         plan = generate_plan(sym, df)
         signal = "BUY" if plan.trend == "BULLISH" and plan.rsi < 70 else "SELL" if plan.trend == "BEARISH" and plan.rsi > 30 else "HOLD"
         lines.append(f"{sym}: ${plan.price:,.2f} | {plan.trend} | RSI {plan.rsi} | {signal}")
+
+    econ = get_week_ahead_note()
+    if econ:
+        lines.append("")
+        lines.append("*ECONOMIC CALENDAR*")
+        lines.append(econ)
 
     msg = "\n".join(lines)
     if len(msg) > 4000:
