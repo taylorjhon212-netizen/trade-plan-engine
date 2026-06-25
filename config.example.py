@@ -1,0 +1,26 @@
+CRYPTO_TIMEFRAME = "1d"
+CRYPTO_LIMIT = 200
+STOCK_PERIOD = "6mo"
+STOCK_INTERVAL = "1d"
+DEFAULT_BALANCE = 10_000
+MAX_RISK_PCT = 0.02
+MAX_DAILY_LOSS_PCT = 0.05
+COOLDOWN_SECONDS = 30
+MAX_TRADE_SIZE_PCT = 0.05
+
+CRYPTO_SYMBOLS = [
+    "BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT",
+    "ADAUSDT", "DOGEUSDT", "DOTUSDT", "AVAXUSDT",
+    "LINKUSDT", "MATICUSDT", "UNIUSDT", "ATOMUSDT",
+]
+
+STOCK_SYMBOLS = [
+    "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA",
+    "META", "TSLA", "JPM", "V", "JNJ",
+    "WMT", "PG", "MA", "UNH", "HD",
+    "DIS", "NFLX", "ADBE", "CRM", "INTC",
+]
+
+# Set these as environment variables (not in this file for security):
+# TELEGRAM_TOKEN
+# TELEGRAM_CHAT_ID

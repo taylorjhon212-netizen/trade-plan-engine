@@ -1,0 +1,93 @@
+from analysis import TradePlan
+
+
+def format_plan_text(plan: TradePlan) -> str:
+    if plan.price == 0:
+        return f"[NO DATA] Unable to analyze {plan.symbol}"
+    s = plan
+    lines = []
+    lines.append("=" * 60)
+    lines.append(f"  TRADE PLAN: {s.symbol} ({s.asset_type.upper()})")
+    lines.append("=" * 60)
+    lines.append(f"  Price: ${s.price:,.2f}  |  Trend: {s.trend} ({s.trend_strength})")
+    lines.append("")
+    lines.append("  -- TECHNICAL ANALYSIS --")
+    lines.append(f"  EMA 20: ${s.ema_20:,.2f}  |  EMA 50: ${s.ema_50:,.2f}  |  EMA 200: ${s.ema_200:,.2f}")
+    lines.append(f"  RSI (14): {s.rsi}  |  ATR: ${s.atr:.2f} ({s.atr_pct}%)")
+    lines.append(f"  MACD: {s.macd_line}  |  Signal: {s.macd_signal}  |  Hist: {s.macd_histogram}")
+    lines.append("")
+    lines.append(f"  Support: {', '.join(f'${v:,.2f}' for v in s.support_levels)}")
+    lines.append(f"  Resistance: {', '.join(f'${v:,.2f}' for v in s.resistance_levels)}")
+    lines.append("")
+    lines.append(f"  Bull Case: {s.bull_case}")
+    lines.append(f"  Bear Case: {s.bear_case}")
+    lines.append("")
+    lines.append("  -- RISK / REWARD --")
+    lines.append(f"  Entry:       ${s.entry_price:,.2f}")
+    lines.append(f"  Stop Loss:   ${s.stop_loss:,.2f}  ({s.sl_pct:+.2f}%)")
+    lines.append(f"  TP1:         ${s.take_profit_1:,.2f}  ({s.tp1_pct:+.2f}%)  R:R = 1:{s.risk_reward_1}")
+    lines.append(f"  TP2:         ${s.take_profit_2:,.2f}  ({s.tp2_pct:+.2f}%)  R:R = 1:{s.risk_reward_2}")
+    lines.append(f"  TP3:         ${s.take_profit_3:,.2f}  ({s.tp3_pct:+.2f}%)  R:R = 1:{s.risk_reward_3}")
+    lines.append(f"  Recommended: {s.recommended_rr} (R:R = 1:{getattr(s, f'risk_reward_{s.recommended_rr[-1]}', '?')})")
+    lines.append("")
+    lines.append("  -- MARKET STRUCTURE --")
+    lines.append(f"  {s.market_note}")
+    lines.append("")
+    lines.append("  -- PSYCHOLOGY & MONEY MANAGEMENT --")
+    lines.append(f"  Position Size: ${s.position_size_usd:,.2f} (max {s.max_risk_pct*100:.0f}% risk)")
+    lines.append(f"  Daily Loss Limit: ${s.daily_loss_limit:,.2f}")
+    lines.append(f"  Cooldown: {s.cooldown_seconds}s between trades")
+    lines.append("")
+    for note in s.psychology_notes or []:
+        lines.append(f"  * {note}")
+    lines.append("=" * 60)
+    return "\n".join(lines)
+
+
+def format_plan_markdown(plan: TradePlan) -> str:
+    if plan.price == 0:
+        return f"# No Data\nUnable to analyze {plan.symbol}"
+    s = plan
+    md = []
+    md.append(f"# Trade Plan: {s.symbol} ({s.asset_type.upper()})")
+    md.append(f"**Price:** ${s.price:,.2f} | **Trend:** {s.trend} ({s.trend_strength})")
+    md.append("")
+    md.append("## 1. Technical Analysis")
+    md.append("| Indicator | Value |")
+    md.append("|---|---|")
+    md.append(f"| EMA 20 | ${s.ema_20:,.2f} |")
+    md.append(f"| EMA 50 | ${s.ema_50:,.2f} |")
+    md.append(f"| EMA 200 | ${s.ema_200:,.2f} |")
+    md.append(f"| RSI (14) | {s.rsi} |")
+    md.append(f"| MACD | {s.macd_line} |")
+    md.append(f"| MACD Signal | {s.macd_signal} |")
+    md.append(f"| MACD Histogram | {s.macd_histogram} |")
+    md.append(f"| ATR | ${s.atr:.2f} ({s.atr_pct}%) |")
+    md.append("")
+    md.append(f"**Support:** {', '.join(f'${v:,.2f}' for v in s.support_levels)}")
+    md.append(f"**Resistance:** {', '.join(f'${v:,.2f}' for v in s.resistance_levels)}")
+    md.append("")
+    md.append(f"**Bull Case:** {s.bull_case}")
+    md.append(f"**Bear Case:** {s.bear_case}")
+    md.append("")
+    md.append("## 2. Risk / Reward")
+    md.append("| Level | Price | Change | R:R |")
+    md.append("|---|---|---|---|")
+    md.append(f"| Entry | ${s.entry_price:,.2f} | - | - |")
+    md.append(f"| Stop Loss | ${s.stop_loss:,.2f} | {s.sl_pct:+.2f}% | - |")
+    md.append(f"| TP1 | ${s.take_profit_1:,.2f} | {s.tp1_pct:+.2f}% | 1:{s.risk_reward_1} |")
+    md.append(f"| TP2 | ${s.take_profit_2:,.2f} | {s.tp2_pct:+.2f}% | 1:{s.risk_reward_2} |")
+    md.append(f"| TP3 | ${s.take_profit_3:,.2f} | {s.tp3_pct:+.2f}% | 1:{s.risk_reward_3} |")
+    md.append(f"| **Recommended** | **{s.recommended_rr}** | | **1:{getattr(s, f'risk_reward_{s.recommended_rr[-1]}', '?')}** |")
+    md.append("")
+    md.append("## 3. Market Structure")
+    md.append(s.market_note)
+    md.append("")
+    md.append("## 4. Psychology & Money Management")
+    md.append(f"- Position Size: ${s.position_size_usd:,.2f}")
+    md.append(f"- Max Risk: {s.max_risk_pct*100:.0f}% of portfolio")
+    md.append(f"- Daily Loss Limit: ${s.daily_loss_limit:,.2f}")
+    md.append(f"- Cooldown: {s.cooldown_seconds}s between trades")
+    for note in s.psychology_notes or []:
+        md.append(f"- {note}")
+    return "\n" .join(md)
