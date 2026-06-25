@@ -35,6 +35,13 @@ def check_alerts():
         if plan.risk_reward_2 >= 2.0:
             reasons.append(f"R:R 1:{plan.risk_reward_2}")
 
+        if plan.bollinger_squeeze:
+            reasons.append(f"BB Squeeze {plan.bollinger_width_pct:.1f}%")
+        if plan.adx >= 25:
+            reasons.append(f"ADX {plan.adx:.1f} strong trend")
+        elif plan.adx < 20:
+            reasons.append(f"ADX {plan.adx:.1f} low trend")
+
         for p in plan.candle_patterns:
             reasons.append(f"Candle: {p}")
         for p in plan.chart_patterns:
@@ -49,7 +56,9 @@ def check_alerts():
 def format_alert(alert):
     sym, plan, reasons = alert
     return (
-        f"*{sym}* ${plan.price:,.2f} | {plan.trend} | Vol {plan.volume_ratio:.1f}x\n"
+        f"*{sym}* ${plan.price:,.2f} | {plan.trend} | ADX {plan.adx:.1f}({plan.adx_strength})\n"
+        f"BB {plan.bollinger_width_pct:.1f}%{' SQUEEZE' if plan.bollinger_squeeze else ''}"
+        f" | Vol {plan.volume_ratio:.1f}x\n"
         f"Entry: ${plan.entry_price:,.2f} SL: ${plan.stop_loss:,.2f}\n"
         f"TP: ${plan.take_profit_1:,.2f} / ${plan.take_profit_2:,.2f} / ${plan.take_profit_3:,.2f}\n"
         f"RSI:{plan.rsi} R:R 1:{plan.risk_reward_2}\n"

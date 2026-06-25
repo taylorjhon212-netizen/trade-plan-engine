@@ -35,6 +35,17 @@ def score_opportunity(plan) -> tuple:
         score += 5
         reasons.append(f"good R:R 1:{plan.risk_reward_2}")
 
+    if plan.adx >= 25:
+        score += 10
+        reasons.append(f"strong trend ADX {plan.adx:.1f}")
+    elif plan.adx < 15:
+        score -= 5
+        reasons.append(f"weak trend ADX {plan.adx:.1f}")
+
+    if plan.bollinger_squeeze:
+        score += 5
+        reasons.append("BB squeeze breakout potential")
+
     if plan.volume_ratio > 1.5:
         score += 10
         reasons.append("high volume")
@@ -93,6 +104,7 @@ def scan_opportunities(symbols: list, min_score: int = 65):
             "action": action,
             "trend": plan.trend,
             "rsi": plan.rsi,
+            "adx": round(plan.adx, 1),
             "rr": f"1:{plan.risk_reward_2}",
             "patterns": plan.candle_patterns + plan.chart_patterns,
             "reasons": reasons[:3],

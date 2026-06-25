@@ -45,6 +45,10 @@ def scan_assets(type: str = Query("crypto", description="crypto or stock")):
             "price": plan.price,
             "trend": plan.trend,
             "rsi": plan.rsi,
+            "adx": round(plan.adx, 1),
+            "adx_strength": plan.adx_strength,
+            "bb_width_pct": round(plan.bollinger_width_pct, 1),
+            "bb_squeeze": plan.bollinger_squeeze,
             "rr2": plan.risk_reward_2,
             "action": "BUY" if plan.trend == "BULLISH" and plan.rsi < 70 else "SELL" if plan.trend == "BEARISH" and plan.rsi > 30 else "HOLD",
         })
@@ -97,6 +101,8 @@ async def tradingview_webhook(request: Request):
         "action": action,
         "signal": plan.trend,
         "rsi": plan.rsi,
+        "adx": round(plan.adx, 1),
+        "bb_squeeze": plan.bollinger_squeeze,
         "rr2": plan.risk_reward_2,
     }
 

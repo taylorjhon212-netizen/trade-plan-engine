@@ -14,7 +14,8 @@ def run():
     for i, r in enumerate(top, 1):
         lines.append(
             f"{i}. *{r['symbol']}* ${r['price']:,.2f} | Score: {r['score']}\n"
-            f"   {r['action']} | {r['trend']} | RSI:{r['rsi']} | R:R {r['rr']}\n"
+            f"   {r['action']} | {r['trend']} | RSI:{r['rsi']} "
+            f"| ADX:{r.get('adx', '?')} | R:R {r['rr']}\n"
             f"   {', '.join(r['reasons'][:2])}"
         )
     econ = get_week_ahead_note()

@@ -14,7 +14,8 @@ def send_daily_report():
             continue
         plan = generate_plan(sym, df)
         signal = "BUY" if plan.trend == "BULLISH" and plan.rsi < 70 else "SELL" if plan.trend == "BEARISH" and plan.rsi > 30 else "HOLD"
-        lines.append(f"{sym}: ${plan.price:,.2f} | {plan.trend} | RSI {plan.rsi} | R:R 1:{plan.risk_reward_2} | {signal}")
+        sqz = " BB-SQZ" if plan.bollinger_squeeze else ""
+        lines.append(f"{sym}: ${plan.price:,.2f} | {plan.trend} | RSI {plan.rsi} | ADX {plan.adx:.1f}{sqz} | R:R 1:{plan.risk_reward_2} | {signal}")
 
     lines.append("")
     lines.append("*STOCK SCAN*")
@@ -24,7 +25,7 @@ def send_daily_report():
             continue
         plan = generate_plan(sym, df)
         signal = "BUY" if plan.trend == "BULLISH" and plan.rsi < 70 else "SELL" if plan.trend == "BEARISH" and plan.rsi > 30 else "HOLD"
-        lines.append(f"{sym}: ${plan.price:,.2f} | {plan.trend} | RSI {plan.rsi} | {signal}")
+        lines.append(f"{sym}: ${plan.price:,.2f} | {plan.trend} | RSI {plan.rsi} | ADX {plan.adx:.1f} | {signal}")
 
     econ = get_week_ahead_note()
     if econ:

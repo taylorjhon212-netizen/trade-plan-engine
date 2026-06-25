@@ -50,6 +50,9 @@ def show_plan(symbol: str):
     t.add_row("RSI (14)", str(plan.rsi))
     t.add_row("MACD Hist", str(plan.macd_histogram))
     t.add_row("ATR", f"${plan.atr:.2f} ({plan.atr_pct}%)")
+    t.add_row("Bollinger", f"Upper ${plan.bollinger_upper:,.2f} / Lower ${plan.bollinger_lower:,.2f}")
+    t.add_row("BB Width", f"{plan.bollinger_width_pct:.1f}% {'SQUEEZE' if plan.bollinger_squeeze else ''}")
+    t.add_row("ADX (14)", f"{plan.adx:.1f} ({plan.adx_strength})")
     t.add_row("Volume", f"{plan.volume_ratio:.1f}x avg")
     console.print(t)
 
@@ -108,7 +111,9 @@ def show_plan(symbol: str):
 
 def _notify_telegram(plan):
     lines = [f"*{plan.symbol}* ${plan.price:,.2f} | {plan.trend}"]
-    lines.append(f"RSI:{plan.rsi} Vol:{plan.volume_ratio:.1f}x")
+    lines.append(f"RSI:{plan.rsi} ADX:{plan.adx}({plan.adx_strength}) Vol:{plan.volume_ratio:.1f}x")
+    sqz = " BB:SQUEEZE" if plan.bollinger_squeeze else ""
+    lines.append(f"BB:{plan.bollinger_width_pct:.1f}%{sqz}")
     if plan.candle_patterns:
         lines.append(f"Mum: {', '.join(plan.candle_patterns)}")
     if plan.chart_patterns:

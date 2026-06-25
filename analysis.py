@@ -45,6 +45,13 @@ class TradePlan:
     risk_reward_2: float
     risk_reward_3: float
     recommended_rr: str
+    bollinger_upper: float = 0
+    bollinger_lower: float = 0
+    bollinger_width_pct: float = 0
+    bollinger_squeeze: bool = False
+    obv: float = 0
+    adx: float = 0
+    adx_strength: str = ""
     market_note: str = ""
     eco_calendar_note: str = ""
     ai_predictions: list = None
@@ -135,6 +142,8 @@ def generate_plan(symbol: str, df: pd.DataFrame, multi_tf: bool = True) -> Trade
                          trend_strength="", support_levels=[], resistance_levels=[],
                          ema_20=0, ema_50=0, ema_200=0, rsi=0, macd_line=0, macd_signal=0,
                          macd_histogram=0, atr=0, atr_pct=0, volume_ratio=0,
+                         bollinger_upper=0, bollinger_lower=0, bollinger_width_pct=0,
+                         bollinger_squeeze=False, obv=0, adx=0, adx_strength="",
                          candle_patterns=[], chart_patterns=[], multi_tf_signal=[],
                          bull_case="", bear_case="", entry_price=0, stop_loss=0, sl_pct=0,
                          take_profit_1=0, tp1_pct=0, take_profit_2=0, tp2_pct=0,
@@ -164,6 +173,25 @@ def generate_plan(symbol: str, df: pd.DataFrame, multi_tf: bool = True) -> Trade
     atr_series = ta.volatility.average_true_range(high, low, close, window=14)
     atr = float(atr_series.iloc[-1]) if not atr_series.empty else price * 0.02
     atr_pct = (atr / price * 100) if price else 0.0
+
+    bb = ta.volatility.BollingerBands(close, window=20, window_dev=2)
+    bb_upper = float(bb.bollinger_hband().iloc[-1]) if not bb.bollinger_hband().empty else 0
+    bb_lower = float(bb.bollinger_lband().iloc[-1]) if not bb.bollinger_lband().empty else 0
+    bb_mid = float(bb.bollinger_mavg().iloc[-1]) if not bb.bollinger_mavg().empty else 0
+    bb_width = ((bb_upper - bb_lower) / bb_mid * 100) if bb_mid else 0
+    bb_squeeze = bb_width < 5.0
+
+    obv_indicator = ta.volume.OnBalanceVolumeIndicator(close, volume)
+    obv = float(obv_indicator.on_balance_volume().iloc[-1]) if not obv_indicator.on_balance_volume().empty else 0
+
+    adx_indicator = ta.trend.ADXIndicator(high, low, close, window=14)
+    adx = float(adx_indicator.adx().iloc[-1]) if not adx_indicator.adx().empty else 0
+    if adx >= 25:
+        adx_strength = "Strong"
+    elif adx >= 20:
+        adx_strength = "Moderate"
+    else:
+        adx_strength = "Weak"
 
     vol_ma = volume.rolling(20).mean()
     vol_ratio = float(volume.iloc[-1] / vol_ma.iloc[-1]) if not vol_ma.empty and vol_ma.iloc[-1] > 0 else 1.0
@@ -264,6 +292,13 @@ def generate_plan(symbol: str, df: pd.DataFrame, multi_tf: bool = True) -> Trade
         atr=round(atr, 2),
         atr_pct=round(atr_pct, 2),
         volume_ratio=round(vol_ratio, 2),
+        bollinger_upper=round(bb_upper, 2),
+        bollinger_lower=round(bb_lower, 2),
+        bollinger_width_pct=round(bb_width, 2),
+        bollinger_squeeze=bb_squeeze,
+        obv=round(obv, 0),
+        adx=round(adx, 1),
+        adx_strength=adx_strength,
         candle_patterns=pattern_names,
         chart_patterns=chart_names,
         multi_tf_signal=tf_note,

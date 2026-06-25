@@ -58,6 +58,10 @@ with tab2:
                     "Price": f"${plan.price:,.2f}",
                     "Trend": plan.trend,
                     "RSI": plan.rsi,
+                    "ADX": f"{plan.adx:.1f}",
+                    "ADX Trend": plan.adx_strength,
+                    "BB %": f"{plan.bollinger_width_pct:.1f}%",
+                    "Squeeze": "Y" if plan.bollinger_squeeze else "N",
                     "R:R (TP2)": f"1:{plan.risk_reward_2}" if plan.risk_reward_2 else "—",
                 })
             progress.progress((i + 1) / len(symbols))
