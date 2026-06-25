@@ -44,7 +44,22 @@ STOCK_SYMBOLS = [
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN") or ""
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID") or ""
 
-YAHOO_SYMBOL_MAP = {
-    "PEPEUSDT": "PEPE24478-USD",
-    "PEPE": "PEPE24478-USD",
+COINBASE_KEY_NAME = os.environ.get("COINBASE_KEY_NAME") or ""
+COINBASE_PRIVATE_KEY = os.environ.get("COINBASE_PRIVATE_KEY") or ""
+
+CRYPTO_COINGECKO_ID = {
+    "BTC": "bitcoin", "ETH": "ethereum", "SOL": "solana", "XRP": "ripple",
+    "AVAX": "avalanche-2", "UNI": "uniswap", "ARKM": "arkham", "WLD": "worldcoin-wld",
+    "ALLO": "allori", "GRT": "the-graph", "RENDER": "render-token", "JUP": "jupiter",
+    "ASTR": "astar", "ID": "space-id", "RDNT": "radiant-capital", "BNB": "binancecoin",
+    "DOGE": "dogecoin", "ADA": "cardano", "DOT": "polkadot", "LINK": "chainlink",
+    "TRX": "tron", "SHIB": "shiba-inu", "NEAR": "near", "APT": "aptos",
+    "SUI": "sui", "OP": "optimism", "ARB": "arbitrum", "LTC": "litecoin",
+    "BCH": "bitcoin-cash", "FIL": "filecoin", "ATOM": "cosmos", "ETC": "ethereum-classic",
+    "XLM": "stellar", "STX": "stacks", "INJ": "injective-protocol", "SEI": "sei-network",
+    "FET": "fetch-ai", "PEPE": "pepe", "FLOKI": "floki", "WIF": "dogwifcoin",
+    "BONK": "bonk", "RUNE": "thorchain", "THETA": "theta-token", "SAND": "the-sandbox",
+    "MANA": "decentraland", "AXS": "axie-infinity", "EOS": "eos",
 }
+
+YAHOO_SYMBOL_MAP = {}
