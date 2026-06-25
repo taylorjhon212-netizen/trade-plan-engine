@@ -1,6 +1,6 @@
 import pandas as pd
 import yfinance as yf
-from config import CRYPTO_TIMEFRAME, CRYPTO_CANDLE_RESAMPLE, STOCK_PERIOD, STOCK_INTERVAL
+from config import CRYPTO_TIMEFRAME, CRYPTO_CANDLE_RESAMPLE, STOCK_PERIOD, STOCK_INTERVAL, YAHOO_SYMBOL_MAP
 
 
 CRYPTO_SUFFIXES = ("USDT", "USD", "USDC", "BUSD")
@@ -16,6 +16,8 @@ def detect_asset_type(symbol: str) -> str:
 
 def _to_yahoo_symbol(symbol: str) -> str:
     s = symbol.upper()
+    if s in YAHOO_SYMBOL_MAP:
+        return YAHOO_SYMBOL_MAP[s]
     if s.endswith("USDT"):
         return s.replace("USDT", "-USD")
     if s.endswith("USDC"):

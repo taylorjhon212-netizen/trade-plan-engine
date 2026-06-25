@@ -43,3 +43,8 @@ STOCK_SYMBOLS = [
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN") or ""
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID") or ""
+
+YAHOO_SYMBOL_MAP = {
+    "PEPEUSDT": "PEPE24478-USD",
+    "PEPE": "PEPE24478-USD",
+}
