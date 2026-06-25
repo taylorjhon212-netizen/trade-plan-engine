@@ -25,6 +25,13 @@ STOCK_SYMBOLS = [
     "META", "TSLA", "JPM", "V", "JNJ",
     "WMT", "PG", "MA", "UNH", "HD",
     "DIS", "NFLX", "ADBE", "CRM", "INTC",
+    "BRK.B", "LLY", "AVGO", "COST", "ABBV",
+    "ORCL", "AMD", "ACN", "QCOM", "CSCO",
+    "INTU", "AMAT", "TXN", "IBM", "BA",
+    "CAT", "MCD", "NKE", "KO", "PEP",
+    "MRK", "ABT", "TMO", "MDT", "UNP",
+    "HON", "LMT", "GE", "UPS", "BAC",
+    "WFC", "GS", "CVX", "XOM", "LIN",
 ]
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN") or ""

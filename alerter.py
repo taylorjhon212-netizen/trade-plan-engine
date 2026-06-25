@@ -7,7 +7,7 @@ from ecocal import get_week_ahead_note
 
 def check_alerts():
     alerts = []
-    all_symbols = CRYPTO_SYMBOLS + STOCK_SYMBOLS[:10]
+    all_symbols = CRYPTO_SYMBOLS + STOCK_SYMBOLS[:20]
 
     for sym in all_symbols:
         df = fetch_data(sym)

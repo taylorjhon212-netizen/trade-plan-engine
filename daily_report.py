@@ -18,7 +18,7 @@ def send_daily_report():
 
     lines.append("")
     lines.append("*STOCK SCAN*")
-    for sym in STOCK_SYMBOLS[:10]:
+    for sym in STOCK_SYMBOLS[:20]:
         df = fetch_data(sym)
         if df.empty:
             continue
