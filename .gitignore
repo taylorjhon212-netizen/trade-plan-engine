@@ -3,3 +3,5 @@ __pycache__/
 .env
 config.py
 *.json
+desktop.ini
+Thumbs.db
